@@ -1,0 +1,27 @@
+--Database Creation 
+create database if not exists s3_to_snowflake;
+use s3_to_snowflake;
+--Table Creation
+create or replace table s3_to_snowflake.PUBLIC.Iris_dataset (sepal_length number(10,5) , sepal_width number(10,4),
+petal_length number(10,3) , petal_width number(10,4) , class varchar(20));
+create or replace file format my_csv_format
+  type = csv field_delimiter = ',' skip_header = 1
+  field_optionally_enclosed_by = '"'
+  null_if = ('NULL', 'null') 
+  empty_field_as_null = true;
+ 
+create or replace stage s3_to_snowflake.PUBLIC.Snow_stage url="s3://awssnowflakeconnection" 
+credentials=(aws_key_id=''
+aws_secret_key='')
+  file_format = my_csv_format;
+  
+ list @Snow_stage;
+ 
+ create or replace pipe s3_to_snowflake.PUBLIC.spa 
+ auto_ingest=true as copy into s3_to_snowflake.PUBLIC.Iris_dataset from 
+ @s3_to_snowflake.PUBLIC.Snow_stage FILE_FORMAT=(FORMAT_NAME=my_csv_format);
+ 
+ show pipes;
+ 
+ select * from s3_to_snowflake.PUBLIC.Iris_dataset;
+ select count(*) from s3_to_snowflake.PUBLIC.Iris_dataset;
