@@ -1,8 +1,0 @@
-{
-   "Service":"Amazon S3",
-   "Event":"s3:TestEvent",
-   "Time":"2022-09-01T15:37:20.626Z",
-   "Bucket":"talendjartesting",
-   "RequestId":"HFZ2BPBD8Y99Z2AT",
-   "HostId":"MFm5UPp7uEvNSuZ30QXL3k6eLaWY2t6NQNF0Vng6DXmJ+ZIe/lfNhvyM7ws3ioYTc9itdHd+sWw="
-}
