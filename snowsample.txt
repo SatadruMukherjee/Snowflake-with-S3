@@ -1,0 +1,18 @@
+create or replace procedure drop_table(Realtimedemo)
+  returns String not null
+  language javascript
+  as     
+  $$  
+    var my_sql_command = "SELECT 'DROP TABLE ' || TABLE_SCHEMA || '.' || TABLE_NAME  as execute_query from RAMU.INFORMATION_SCHEMA.TABLES where TABLE_NAME like '%STA%' AND TABLE_SCHEMA='PUBLIC'";
+    var statement1 = snowflake.createStatement( {sqlText: my_sql_command} );
+    var result_set1 = statement1.execute();
+    var capture_result=" Executed the queries : "+"\n"
+    while (result_set1.next())  {
+       query_to_be_executed=result_set1.getColumnValue('EXECUTE_QUERY');
+       var statement2 = snowflake.createStatement( {sqlText: query_to_be_executed} );
+       statement2.execute(); 
+       capture_result=capture_result+result_set1.getColumnValue('EXECUTE_QUERY')+"\n";
+       }
+  return capture_result; // Replace with something more useful.
+  $$
+  ;
